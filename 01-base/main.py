@@ -1,10 +1,11 @@
 from dotenv import load_dotenv
+from pathlib import Path
 import os
 from langchain_core.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from langchain_ollama import ChatOllama
 
-load_dotenv()
+load_dotenv(Path(__file__).parent / "../.env")
 
 
 def main():
@@ -31,13 +32,13 @@ Musk's political activities, statements and views have made him a polarizing fig
         input_variables=["information"], template=summary_template
     )
 
-    llm = ChatGroq(temperature=0, model="llama-3.1-8b-instant")
+    llm = ChatGroq(temperature=0, model=os.getenv("GROQ_MODEL", ""))
     # llm = ChatOllama(temperature=0, model="gemma3:270m")
 
     # This creates a Runnable invokable
     chain = summary_prompt_template | llm
 
-    response = chain.invoke(input={"information": information})
+    response = chain.invoke(input={"information": information}, config={"run_name": "01-base"})
 
     print(response.content)
 
