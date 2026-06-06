@@ -10,6 +10,7 @@ Hands-on exercises following the LangGraph/LangChain course by Eden Marco.
 | `02-react` | ReAct Agent | Full ReAct agent built with `create_agent`. The reason → act → observe loop is hidden inside the framework. Covers tool use, structured output (Groq workaround and Ollama `ProviderStrategy`). |
 | `03-react-loop-under-the-hood` | ReAct Loop Under the Hood | Manually implements what `create_agent` does internally: explicit iteration, `tool_calls` inspection, and `ToolMessage` dispatch. Educational only — everything here can be achieved with `02`'s approach via config (`recursion_limit`) and callbacks. |
 | `04-react-loop-raw-function-calling` | ReAct Loop — Raw Function Calling | Agent workflow built without LangChain: calls Ollama directly, uses LangSmith for tracing only. Tool definitions are written manually as JSON schemas (OpenAI function-calling format), though Google-style docstrings on the functions would achieve the same result. Shows what the framework abstracts away at the protocol level. |
+| `05-raw-react-prompts` | ReAct Loop — Prompt-Driven Reasoning | Same stack as `04` (Ollama + LangSmith, no LangChain) but removes native tool-calling entirely. Instead, the classic ReAct prompt format (`Thought / Action / Action Input / Observation / Final Answer`) is injected into the system prompt, and tool descriptions are generated at runtime from function signatures and docstrings via `inspect`. The LLM reasons in plain text and decides which tool to call; the loop parses that text to dispatch the right function. There is no system prompt — the question is embedded directly into the ReAct prompt, making the entire conversation a single unified user-level prompt. A `scratchpad` string accumulates `Thought/Action/Observation` turns and is appended to the prompt each iteration, since there is no message history. A `stop` token (`"\nObservation"`) halts LLM generation at the observation boundary, preventing the model from hallucinating its own tool results. |
 
 ### `02` vs `03` — same thing, different abstraction level
 
@@ -45,4 +46,5 @@ uv run python 01-base/main.py
 uv run python 02-react/main.py
 uv run python 03-react-loop-under-the-hood/main.py
 uv run python 04-react-loop-raw-function-calling/main.py
+uv run python 05-raw-react-prompts/main.py
 ```
