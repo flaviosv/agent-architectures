@@ -1,10 +1,10 @@
 import os
-
+from pathlib import Path
 from dotenv import load_dotenv
 import ollama
 from langsmith import traceable
 
-load_dotenv()
+load_dotenv(Path(__file__).parent / "../.env")load_dotenv()
 
 MAX_ITERATIONS = 10
 MODEL = os.getenv("OLLAMA_MODEL")

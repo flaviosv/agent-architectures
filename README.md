@@ -11,6 +11,7 @@ Hands-on exercises following the LangGraph/LangChain course by Eden Marco.
 | `03-react-loop-under-the-hood` | ReAct Loop Under the Hood | Manually implements what `create_agent` does internally: explicit iteration, `tool_calls` inspection, and `ToolMessage` dispatch. Educational only — everything here can be achieved with `02`'s approach via config (`recursion_limit`) and callbacks. |
 | `04-react-loop-raw-function-calling` | ReAct Loop — Raw Function Calling | Agent workflow built without LangChain: calls Ollama directly, uses LangSmith for tracing only. Tool definitions are written manually as JSON schemas (OpenAI function-calling format), though Google-style docstrings on the functions would achieve the same result. Shows what the framework abstracts away at the protocol level. |
 | `05-raw-react-prompts` | ReAct Loop — Prompt-Driven Reasoning | Same stack as `04` (Ollama + LangSmith, no LangChain) but removes native tool-calling entirely. Instead, the classic ReAct prompt format (`Thought / Action / Action Input / Observation / Final Answer`) is injected into the system prompt, and tool descriptions are generated at runtime from function signatures and docstrings via `inspect`. The LLM reasons in plain text and decides which tool to call; the loop parses that text to dispatch the right function. There is no system prompt — the question is embedded directly into the ReAct prompt, making the entire conversation a single unified user-level prompt. A `scratchpad` string accumulates `Thought/Action/Observation` turns and is appended to the prompt each iteration, since there is no message history. A `stop` token (`"\nObservation"`) halts LLM generation at the observation boundary, preventing the model from hallucinating its own tool results. |
+| `06-rag` | RAG — Retrieval-Augmented Generation | Introduces RAG using Ollama embeddings and Pinecone as the vector store. `ingestion.py` loads a local text file, splits it into chunks (`CharacterTextSplitter`, 1 000-char chunks, 8-char overlap), embeds them with Ollama, and upserts into a Pinecone index. `main.py` demonstrates three implementations against the same query: **(0)** raw LLM with no retrieval context; **(1)** a manual retrieval chain — retrieve → format → build prompt → invoke LLM — without LCEL, to expose the individual steps; **(2)** the same pipeline rewritten as a composable LCEL chain (`RunnablePassthrough.assign | prompt | llm | StrOutputParser`), which gains streaming, async, and batch support for free. The side-by-side comparison makes the verbosity vs. composability trade-off concrete. |
 
 ### `02` vs `03` — same thing, different abstraction level
 
@@ -36,7 +37,7 @@ Once you understand the loop `03` shows, use `02`'s approach for all real code.
 
 ```bash
 uv sync
-cp .env.example .env   # set GROQ_MODEL, OLLAMA_MODEL, TAVILY_API_KEY
+cp .env.example .env   # set GROQ_MODEL, OLLAMA_MODEL, OLLAMA_EMBEDDING, TAVILY_API_KEY, PINECONE_API_KEY
 ```
 
 Run any lesson:
@@ -47,4 +48,6 @@ uv run python 02-react/main.py
 uv run python 03-react-loop-under-the-hood/main.py
 uv run python 04-react-loop-raw-function-calling/main.py
 uv run python 05-raw-react-prompts/main.py
+uv run python 06-rag/ingestion.py   # one-time: embed & upsert docs into Pinecone
+uv run python 06-rag/main.py
 ```

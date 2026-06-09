@@ -1,12 +1,12 @@
 import os
-
+from pathlib import Path
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain.tools import tool
 from langchain.messages import HumanMessage, SystemMessage, ToolMessage
 from langsmith import traceable
 
-load_dotenv()
+load_dotenv(Path(__file__).parent / "../.env")
 
 MAX_ITERATIONS = 10
 MODEL = os.getenv("OLLAMA_MODEL")
