@@ -1,8 +1,11 @@
 # Project Guidelines
 
-## LangChain — Modern API Rules
+## Learning instructions
 
-Always use the **LangChain 1.x APIs**. `create_react_agent` from `langgraph.prebuilt` is outdated.
+- This project has the goal to study Agent architectures using LangGraph / LangChain, use the most recent techniques available
+- Prefer showing / teaching approaches over doing code yourself
+
+## LangChain 1.x API
 
 | Do | Don't |
 |----|-------|
@@ -10,21 +13,12 @@ Always use the **LangChain 1.x APIs**. `create_react_agent` from `langgraph.preb
 | `from langchain_core.tools import tool` | `from langchain.tools import tool` |
 | `from langchain_core.messages import HumanMessage` | `from langchain.schema import HumanMessage` |
 
-### Agents
+## Agents & Tools
 
-- Build agents with `langchain.agents.create_agent(llm, tools)`.
-- Pass `response_format=MySchema` to get structured output natively.
-- Extract structured output from `result["structured_response"]` (not `result["messages"][-1]`).
+- Build agents: `create_agent(llm, tools)` — optionally with `response_format=...` for structured output.
+- Tools: `@tool` from `langchain_core.tools`, always with a docstring.
 
-### Tools
+## Structured Output
 
-- Decorate tools with `@tool` from `langchain_core.tools`.
-- Always include a docstring — it is used as the tool description for the LLM.
-
-### Structured output
-
-- Define schemas as `pydantic.BaseModel` subclasses.
-- For models that don't support simultaneous tool-use + structured output (e.g. Groq), run the agent first, then call `llm.with_structured_output(Schema).invoke(last_message)` separately.
-- For models that support it natively (e.g. Ollama), use `response_format=ProviderStrategy(Schema)` — **not** `response_format=Schema` directly.
-  - Passing `Schema` directly uses `ToolStrategy`: the LLM must call the schema as a tool; unreliable after multiple tool calls.
-  - `ProviderStrategy` enforces JSON output at the provider level, guaranteeing `result["structured_response"]` is always populated.
+- **Groq** — no simultaneous tools + structured output: run agent first, then `llm.with_structured_output(Schema).invoke(last_message)`.
+- **Ollama** — use `response_format=ProviderStrategy(Schema)`; extract from `result["structured_response"]`.
