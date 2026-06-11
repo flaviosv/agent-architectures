@@ -7,7 +7,7 @@ import inspect
 from dotenv import load_dotenv
 from langsmith import traceable
 
-load_dotenv(Path(__file__).parent / "../.env")load_dotenv()
+load_dotenv(Path(__file__).parent / "../.env")
 
 MAX_ITERATIONS = 10
 MODEL = os.getenv("OLLAMA_MODEL")
