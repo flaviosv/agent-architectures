@@ -1,11 +1,12 @@
 import asyncio
+from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
 from langgraph.graph import MessagesState, StateGraph, END, START
 from nodes import run_agent_reasoning, tool_node
 
-load_dotenv()
+load_dotenv(Path(__file__).parent / "../.env")
 
 AGENT_REASON = "agent_reason"
 ACT = "act"

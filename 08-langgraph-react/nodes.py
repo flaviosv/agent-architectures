@@ -1,11 +1,12 @@
 from dotenv import load_dotenv
+from pathlib import Path
 from langgraph.graph import MessagesState
 from langgraph.prebuilt import ToolNode
 from langchain.messages import SystemMessage
 
 from react import llm, tools
 
-load_dotenv()
+load_dotenv(Path(__file__).parent / "../.env")
 
 SYSTEM_MESSAGE = """
 You are a helpful assistant that can use tools to answer questions.

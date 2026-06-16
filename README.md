@@ -14,6 +14,7 @@ Hands-on exercises following the LangGraph/LangChain frameworks
 | `06-rag` | RAG | Ollama embeddings + Pinecone. Three side-by-side implementations: raw LLM, manual chain, and LCEL chain. |
 | `07-agentic-rag` | Agentic RAG | Upgrades `06` — the LLM decides when to retrieve. Ingestion crawls live LangChain docs via `TavilyCrawl`; retrieval tool uses `response_format="content_and_artifact"` to surface both context and raw `Document` objects. |
 | `08-langgraph-react` | LangGraph ReAct | Builds a ReAct loop as an explicit `StateGraph`: `agent_reason` node → conditional edge (`should_continue`) → `act` node (`ToolNode`) → back to `agent_reason`. Exports `flow.png` via `draw_mermaid_png`. Shows the graph wiring that `create_agent` hides. |
+| `09-langgraph-reflection` | LangGraph Reflection | Implements a self-reflection loop: `generate` node drafts a tweet, `reflect` node critiques it as a `HumanMessage` (prompt trick to keep chat history natural), conditional edge exits after 3 rounds. Two separate LCEL chains (`generate_chain`, `reflect_chain`) wired into a `StateGraph` with `add_messages` reducer. |
 
 ## Key Concepts
 
@@ -42,4 +43,5 @@ uv run python 06-rag/main.py
 uv run python 07-agentic-rag/ingestion.py   # one-time: crawl & upsert LangChain docs via Tavily
 uv run python 07-agentic-rag/backend/core.py
 uv run python 08-langgraph-react/main.py
+uv run python 09-langgraph-reflection/main.py
 ```
