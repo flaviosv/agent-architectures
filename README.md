@@ -6,15 +6,16 @@ Hands-on exercises following the LangGraph/LangChain frameworks
 
 | Folder | Title | Key idea |
 |--------|-------|----------|
-| `01-base` | Base AI Workflow | Minimal `prompt \| llm` LCEL chain — no agents, no tools. Baseline only. |
-| `02-react` | ReAct Agent | `create_agent` with tool use and structured output (Groq workaround + Ollama `ProviderStrategy`). |
-| `03-react-loop-under-the-hood` | ReAct Loop Under the Hood | Manually reimplements `create_agent`'s loop. Educational — everything it shows is available in `02` via config. |
-| `04-react-loop-raw-function-calling` | Raw Function Calling | No LangChain: Ollama called directly, tools as raw JSON schemas, LangSmith for tracing only. |
-| `05-raw-react-prompts` | Prompt-Driven ReAct | No native tool-calling: `Thought / Action / Observation` prompt drives the loop; a `stop` token prevents the model from hallucinating observations. |
-| `06-rag` | RAG | Ollama embeddings + Pinecone. Three side-by-side implementations: raw LLM, manual chain, and LCEL chain. |
-| `07-agentic-rag` | Agentic RAG | Upgrades `06` — the LLM decides when to retrieve. Ingestion crawls live LangChain docs via `TavilyCrawl`; retrieval tool uses `response_format="content_and_artifact"` to surface both context and raw `Document` objects. |
-| `08-langgraph-react` | LangGraph ReAct | Builds a ReAct loop as an explicit `StateGraph`: `agent_reason` node → conditional edge (`should_continue`) → `act` node (`ToolNode`) → back to `agent_reason`. Exports `flow.png` via `draw_mermaid_png`. Shows the graph wiring that `create_agent` hides. |
-| `09-langgraph-reflection` | LangGraph Reflection | Implements a self-reflection loop: `generate` node drafts a tweet, `reflect` node critiques it as a `HumanMessage` (prompt trick to keep chat history natural), conditional edge exits after 3 rounds. Two separate LCEL chains (`generate_chain`, `reflect_chain`) wired into a `StateGraph` with `add_messages` reducer. |
+| `01-base` | Base AI Workflow | Minimal LCEL chain — no agents, no tools. Baseline only. |
+| `02-react` | ReAct Agent | Agent with tool use and structured output, covering Groq and Ollama provider differences. |
+| `03-react-loop-under-the-hood` | ReAct Loop Under the Hood | Manually reimplements the agent loop to expose what the framework hides. |
+| `04-react-loop-raw-function-calling` | Raw Function Calling | Calls the model directly with no LangChain abstractions — tools as plain JSON schemas. |
+| `05-raw-react-prompts` | Prompt-Driven ReAct | ReAct loop driven purely by prompt engineering — no native tool-calling API. |
+| `06-rag` | RAG | Retrieval-Augmented Generation with Ollama embeddings and Pinecone, shown in three variants. |
+| `07-agentic-rag` | Agentic RAG | Upgrades `06` — the LLM decides when to retrieve rather than always retrieving. |
+| `08-langgraph-react` | LangGraph ReAct | ReAct loop built as an explicit state graph, showing the wiring that `create_agent` abstracts away. |
+| `09-langgraph-reflection` | LangGraph Reflection | Self-reflection loop: a generation node and a critique node alternate for a fixed number of rounds. |
+| `10-langgraph-reflexion` | LangGraph Reflexion | [Reflexion](https://arxiv.org/abs/2303.11366) architecture: the agent drafts an answer, searches the web to gather evidence, then revises with citations — looping until a max iteration limit. |
 
 ## Key Concepts
 
@@ -44,4 +45,5 @@ uv run python 07-agentic-rag/ingestion.py   # one-time: crawl & upsert LangChain
 uv run python 07-agentic-rag/backend/core.py
 uv run python 08-langgraph-react/main.py
 uv run python 09-langgraph-reflection/main.py
+uv run python 10-langgraph-reflexion/main.py
 ```
