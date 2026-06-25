@@ -17,7 +17,8 @@ Hands-on exercises following the LangGraph/LangChain frameworks
 | `09-langgraph-reflection` | LangGraph Reflection | Self-reflection loop: a generation node and a critique node alternate for a fixed number of rounds. |
 | `10-langgraph-reflexion` | LangGraph Reflexion | [Reflexion](https://arxiv.org/abs/2303.11366) architecture: the agent drafts an answer, searches the web to gather evidence, then revises with citations — looping until a max iteration limit. |
 | `11-langgraph-corrective-rag` | LangGraph Advanced RAG | Corrective RAG graph: retrieves docs, grades their relevance, falls back to web search when needed, then generates — routing decisions are made at each node. |
-| `12-langgraph-self-rag` | LangGraph Self-RAG | *(in progress)* Extends `11` with Self-RAG behavior: the agent grades its own generation for hallucinations and answer relevance, looping back to retrieve or regenerate as needed. |
+| `12-langgraph-self-rag` | LangGraph Self-RAG | Extends `11` with Self-RAG: after generating, the graph grades the output for hallucinations (grounded in docs?) and answer relevance (addresses the question?). Returns `useful` → end, `not useful` → web search, `not supported` → regenerate. |
+| `13-langgraph-adaptive-rag` | LangGraph Adaptive RAG | *(in progress)* Extends `12` with Adaptive RAG behavior. |
 
 ## Key Concepts
 
