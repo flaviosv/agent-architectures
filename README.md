@@ -16,6 +16,8 @@ Hands-on exercises following the LangGraph/LangChain frameworks
 | `08-langgraph-react` | LangGraph ReAct | ReAct loop built as an explicit state graph, showing the wiring that `create_agent` abstracts away. |
 | `09-langgraph-reflection` | LangGraph Reflection | Self-reflection loop: a generation node and a critique node alternate for a fixed number of rounds. |
 | `10-langgraph-reflexion` | LangGraph Reflexion | [Reflexion](https://arxiv.org/abs/2303.11366) architecture: the agent drafts an answer, searches the web to gather evidence, then revises with citations — looping until a max iteration limit. |
+| `11-langgraph-corrective-rag` | LangGraph Advanced RAG | Corrective RAG graph: retrieves docs, grades their relevance, falls back to web search when needed, then generates — routing decisions are made at each node. |
+| `12-langgraph-self-rag` | LangGraph Self-RAG | *(in progress)* Extends `11` with Self-RAG behavior: the agent grades its own generation for hallucinations and answer relevance, looping back to retrieve or regenerate as needed. |
 
 ## Key Concepts
 
@@ -46,4 +48,6 @@ uv run python 07-agentic-rag/backend/core.py
 uv run python 08-langgraph-react/main.py
 uv run python 09-langgraph-reflection/main.py
 uv run python 10-langgraph-reflexion/main.py
+uv run python 11-langgraph-corrective-rag/ingestion.py   # one-time: embed & upsert docs into Pinecone
+uv run python 11-langgraph-corrective-rag/main.py
 ```
