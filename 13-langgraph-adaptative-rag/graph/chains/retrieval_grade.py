@@ -8,8 +8,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 from langchain_ollama import ChatOllama
 
-load_dotenv(Path(__file__).parent / "../../../.env")
-
 llm = ChatOllama(model=os.getenv("OLLAMA_MODEL", ""))
 
 class GradeDocuments(BaseModel):
