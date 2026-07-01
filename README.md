@@ -19,6 +19,7 @@ Hands-on exercises following the LangGraph/LangChain frameworks
 | `11-langgraph-corrective-rag` | LangGraph Advanced RAG | Corrective RAG graph: retrieves docs, grades their relevance, falls back to web search when needed, then generates — routing decisions are made at each node. |
 | `12-langgraph-self-rag` | LangGraph Self-RAG | Extends `11` with Self-RAG: after generating, the graph grades the output for hallucinations (grounded in docs?) and answer relevance (addresses the question?). Returns `useful` → end, `not useful` → web search, `not supported` → regenerate. |
 | `13-langgraph-adaptative-rag` | LangGraph Adaptive RAG | Extends `12` with Adaptive RAG: a router node inspects the question first and picks between vectorstore retrieval and web search before any docs are fetched. Combines up-front routing with the full self-RAG pipeline (doc grading → generate → hallucination check → answer relevance check). |
+| `14-mcp-server` | MCP Server | Exposes tools via the [Model Context Protocol](https://modelcontextprotocol.io/) using `FastMCP`: a `math` server over stdio transport and a `weather` server over SSE transport, consumed through `langchain-mcp-adapters`. |
 
 ## Key Concepts
 
@@ -55,4 +56,6 @@ uv run python 12-langgraph-self-rag/ingestion.py         # one-time: embed & ups
 uv run python 12-langgraph-self-rag/main.py
 uv run python 13-langgraph-adaptative-rag/ingestion.py   # one-time: embed & upsert docs into Chroma
 uv run python 13-langgraph-adaptative-rag/main.py
+uv run python 14-mcp-server/servers/weather_server.py     # start first, in a separate terminal: SSE server
+uv run python 14-mcp-server/main.py
 ```

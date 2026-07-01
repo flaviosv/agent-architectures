@@ -12,6 +12,7 @@ dependencies = [
     "langchain-chroma",
     "langchain-community>=0.4.2",
     "langchain-groq>=1.1.2",
+    "langchain-mcp-adapters>=0.3.0",
     "langchain-ollama>=1.1.0",
     "langchain-pinecone>=0.2.13",
     "langchain-tavily>=0.2.18",
